@@ -1346,7 +1346,7 @@ interface ExportDeclaration <: Node {}
 
 An `export` declaration.
 
-### ExportNamedDeclaration
+### ExportNamedDeclaration —— 导出命名声明
 
 ```js
 interface ExportNamedDeclaration <: ExportDeclaration {
@@ -1358,6 +1358,16 @@ interface ExportNamedDeclaration <: ExportDeclaration {
 }
 ```
 
+用来声明导出模块的命名，例如`export {foo, bar};`, `export {foo} from "mod";`, `export var foo = 1;` 或者 `export * as foo from "bar";`.
+
+注意：
+
+- 用非空`specifiers`或非空`source`去填充`declaration` 将会会导致无效状态。
+- 如果`source`是`null`，对于`specifiers`中的每一个`specifier`，`specifier.local`都不能是一个`StringLiteral`。
+- 如果`specifiers`包含`ExportNamespaceSpecifier`，则必须只有一个`ExportNamespaceSpecifier`。
+
+英文原文：
+```
 An export named declaration, e.g., `export {foo, bar};`, `export {foo} from "mod";`, `export var foo = 1;` or `export * as foo from "bar";`.
 
 Note:
@@ -1365,8 +1375,9 @@ Note:
 - Having `declaration` populated with non-empty `specifiers` or non-null `source` results in an invalid state.
 - If `source` is `null`, for each `specifier` of `specifiers`, `specifier.local` can not be a `StringLiteral`.
 - If `specifiers` contains `ExportNamespaceSpecifier`, it must have only one `ExportNamespaceSpecifier`.
+```
 
-### ExportSpecifier
+### ExportSpecifier —— 导出说明符
 
 ```js
 interface ExportSpecifier <: ModuleSpecifier {
@@ -1376,7 +1387,8 @@ interface ExportSpecifier <: ModuleSpecifier {
 }
 ```
 
-An exported variable binding, e.g., `{foo}` in `export {foo}` or `{bar as foo}` in `export {bar as foo}`. The `exported` field refers to the name exported in the module. The `local` field refers to the binding into the local module scope. If it is a basic named export, such as in `export {foo}`, both `exported` and `local` are equivalent `Identifier` nodes; in this case an `Identifier` node representing `foo`. If it is an aliased export, such as in `export {bar as foo}`, the `exported` field is an `Identifier` node representing `foo`, and the `local` field is an `Identifier` node representing `bar`.
+用于说明导出的变量如何绑定，例如：`export {foo}`中的`{foo}`或`export {bar as foo}`中的`{bar as foo}`。该`exported`字段是指模块中导出的名称。该`local`字段是指绑定到本地模块作用域（local module scope）的名称。如果是基本的命名导出，比如在`export {foo}`中，`exported`和`local` 都是等价的`Identifier`节点；在本例中，这个`Identifier`节点代表`foo`。如果是别名导出，例如，在`export {bar as foo}`中，则该`exported`字段的`Identifier`节点代表`foo`，而`local`字段的`Identifier`节点代表`bar`。
+
 
 ### ExportNamespaceSpecifier
 
